@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-
+import sys
+sys.path.append('../src')
 import hopsworks
 import hsfs
 from hsfs.feature_store import FeatureStore

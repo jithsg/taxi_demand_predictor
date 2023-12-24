@@ -1,4 +1,8 @@
 import zipfile 
+import sys
+sys.path.append('../src')
+
+
 from datetime import datetime, timedelta
 
 import requests

@@ -1,5 +1,8 @@
 from dotenv import load_dotenv
 import os
+import sys
+sys.path.append('../src')
+
 from pathlib import Path
 from src.paths import PARENT_DIR
 
