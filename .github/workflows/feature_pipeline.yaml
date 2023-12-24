@@ -27,8 +27,9 @@ jobs:
 
     - name: Install Hopsworks
       run: pip install -r requirements.txt
+           pip install jupyter nbconvert
 
     - name: Run feature generation script
       env: 
         HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
-      run: poetry run jupyter nbconvert --to notebook --execute notebooks/12_feature_pipeline.ipynb
+      run: jupyter nbconvert --to notebook --execute notebooks/12_feature_pipeline.ipynb
