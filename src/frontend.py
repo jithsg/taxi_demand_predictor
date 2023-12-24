@@ -206,6 +206,69 @@ with st.spinner(text="Generating predictions"):
     st.sidebar.write('✅ Predictions generated')
     progress_bar.progress(4/N_STEPS)
 
+
+with st.spinner(text="Preparing data to plot"):
+
+    def pseudocolor(val, minval, maxval, startcolor, stopcolor):
+        """
+        Convert value in the range minval...maxval to a color in the range
+        startcolor to stopcolor. The colors passed and the the one returned are
+        composed of a sequence of N component values.
+
+        Credits to https://stackoverflow.com/a/10907855
+        """
+        f = float(val-minval) / (maxval-minval)
+        return tuple(f*(b-a)+a for (a, b) in zip(startcolor, stopcolor))
+        
+    df = pd.merge(geo_df, predictions_df,
+                  right_on='pickup_location_id',
+                  left_on='LocationID',
+                  how='inner')
+    
+    BLACK, GREEN = (0, 0, 0), (0, 255, 0)
+    df['color_scaling'] = df['predicted_demand']
+    max_pred, min_pred = df['color_scaling'].max(), df['color_scaling'].min()
+    df['fill_color'] = df['color_scaling'].apply(lambda x: pseudocolor(x, min_pred, max_pred, BLACK, GREEN))
+    progress_bar.progress(5/N_STEPS)
+    
+    
+with st.spinner(text="Generating NYC Map"):
+
+    INITIAL_VIEW_STATE = pdk.ViewState(
+        latitude=40.7831,
+        longitude=-73.9712,
+        zoom=11,
+        max_zoom=16,
+        pitch=45,
+        bearing=0
+    )
+
+    geojson = pdk.Layer(
+        "GeoJsonLayer",
+        df,
+        opacity=0.25,
+        stroked=False,
+        filled=True,
+        extruded=False,
+        wireframe=True,
+        get_elevation=10,
+        get_fill_color="fill_color",
+        get_line_color=[255, 255, 255],
+        auto_highlight=True,
+        pickable=True,
+    )
+
+    tooltip = {"html": "<b>Zone:</b> [{LocationID}]{zone} <br /> <b>Predicted rides:</b> {predicted_demand}"}
+
+    r = pdk.Deck(
+        layers=[geojson],
+        initial_view_state=INITIAL_VIEW_STATE,
+        tooltip=tooltip
+    )
+
+    st.pydeck_chart(r)
+    progress_bar.progress(6/N_STEPS)
+
 # with st.spinner(text="Plotting time-series data"):
    
 #     row_indices = np.argsort(predictions_df['predicted_demand'].values)[::-1]
