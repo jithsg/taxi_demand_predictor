@@ -32,4 +32,7 @@ jobs:
     - name: Run feature generation script
       env: 
         HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
-      run: jupyter nbconvert --to notebook --execute notebooks/12_feature_pipeline.ipynb
+      run: |
+        cd notebooks
+        jupyter nbconvert --to notebook --execute 12_feature_pipeline.ipynb
+      
