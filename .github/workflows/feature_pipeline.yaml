@@ -17,16 +17,16 @@ jobs:
       with:
         python-version: '3.10.12'
     
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: 1.7.1 # Specify the Poetry version, if needed
+    # - name: Install Poetry
+    #   uses: snok/install-poetry@v1
+    #   with:
+    #     version: 1.7.1 # Specify the Poetry version, if needed
 
-    - name: Install Dependencies
-      run: poetry install
+    # - name: Install Dependencies
+    #   run: poetry install
 
-    # - name: Install Hopsworks
-    #   run: pip install -r requirements.txt
+    - name: Install Hopsworks
+      run: pip install -r requirements.txt
 
     - name: Run feature generation script
       env: 
