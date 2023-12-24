@@ -9,8 +9,7 @@ import geopandas as gpd
 import pydeck as pdk
 
 from src.inference import load_model_from_registry, \
-    load_batch_of_features_from_store,
-    get_model_predictions
+    load_batch_of_features_from_store, get_model_predictions
 from src.paths import DATA_DIR
 from src.plot import plot_one_sample
 
